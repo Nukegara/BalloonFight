@@ -64,11 +64,11 @@ void Obj::Draw()
 	}
 	if (dir == DIR_L)
 	{
-		DrawGraph(pos.x + drawOffset.x + areaOffset.x, pos.y + drawOffset.y + areaOffset.y, IMAGE_ID(imageName)[id], true);
+		DrawGraph(pos.x/* + drawOffset.x + areaOffset.x*/, pos.y/* + drawOffset.y + areaOffset.y*/, IMAGE_ID(imageName)[id], true);
 	}
 	if (dir == DIR_R)
 	{
-		DrawTurnGraph(pos.x + drawOffset.x + areaOffset.x, pos.y + drawOffset.y + areaOffset.y, IMAGE_ID(imageName)[id], true);
+		DrawTurnGraph(pos.x/* + drawOffset.x + areaOffset.x*/, pos.y/* + drawOffset.y + areaOffset.y*/, IMAGE_ID(imageName)[id], true);
 	}
 }
 

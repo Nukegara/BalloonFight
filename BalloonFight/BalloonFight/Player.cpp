@@ -58,32 +58,35 @@ void Player::SetMove()
 	GetKeyData();
 
 	// 真ん中上(頭上)
-	CHIP_TYPE cpTypeCT = lpMapCtl.GetMapData(pos + VECTOR2(lpMapCtl.GetChipSize() / 2, 0), BF_GP_GROUND);
+	CHIP_TYPE cpTypeCT = lpMapCtl.GetMapData(pos + VECTOR2(16 / 2, 0), BF_GP_GROUND);
 
 	// 真ん中下(足元)
-	CHIP_TYPE cpTypeCB = lpMapCtl.GetMapData(pos + VECTOR2(lpMapCtl.GetChipSize() / 2, lpMapCtl.GetChipSize() - 1), BF_GP_GROUND);
+	CHIP_TYPE cpTypeCB = lpMapCtl.GetMapData(pos + VECTOR2(16 / 2, 24 - 1), BF_GP_GROUND);
 
 	// 左上
 	CHIP_TYPE cpTypeLT = lpMapCtl.GetMapData(pos + VECTOR2(-1, 0), BF_GP_GROUND);
 
 	// 左下
-	CHIP_TYPE cpTypeLB = lpMapCtl.GetMapData(pos + VECTOR2(-1, lpMapCtl.GetChipSize() - 1), BF_GP_GROUND);
+	CHIP_TYPE cpTypeLB = lpMapCtl.GetMapData(pos + VECTOR2(-1, 24 - 1), BF_GP_GROUND);
 
 	// 右上
-	CHIP_TYPE cpTypeRT = lpMapCtl.GetMapData(pos + VECTOR2(lpMapCtl.GetChipSize() + 1, 0), BF_GP_GROUND);
+	CHIP_TYPE cpTypeRT = lpMapCtl.GetMapData(pos + VECTOR2(16 + 1, 0), BF_GP_GROUND);
 
 	// 右下
-	CHIP_TYPE cpTypeRB = lpMapCtl.GetMapData(pos + VECTOR2(lpMapCtl.GetChipSize() + 1, lpMapCtl.GetChipSize() - 1), BF_GP_GROUND);
+	CHIP_TYPE cpTypeRB = lpMapCtl.GetMapData(pos + VECTOR2(16 + 1, 24 - 1), BF_GP_GROUND);
 
 	// 自分の1マス上
-	CHIP_TYPE cpTypeCU = lpMapCtl.GetMapData(pos + VECTOR2(lpMapCtl.GetChipSize() / 2, -1), BF_GP_GROUND);
+	CHIP_TYPE cpTypeCU = lpMapCtl.GetMapData(pos + VECTOR2(16 / 2, -1), BF_GP_GROUND);
 
 	// 自分の1マス下
-	CHIP_TYPE cpTypeCD = lpMapCtl.GetMapData(pos + VECTOR2(lpMapCtl.GetChipSize() / 2, lpMapCtl.GetChipSize()), BF_GP_GROUND);
+	CHIP_TYPE cpTypeCD = lpMapCtl.GetMapData(pos + VECTOR2(16 / 2, 24), BF_GP_GROUND);
 
 	animCnt++;
 	velocityY += 0.2f;
 	pos.y += velocityY;
+	pos.x += velocityX;
+	SetAnim("落下2");
+
 	if (velocityX >= 4)
 	{
 		velocityX = 4;
@@ -92,9 +95,18 @@ void Player::SetMove()
 	{
 		velocityX = -4;
 	}
-	if (velocityY >= 2)
+	if (velocityY >= 4)
 	{
-		velocityY = 2;
+		velocityY = 4;
+	}
+
+	if (velocityX <= 0)
+	{
+		velocityX += 0.02f;
+	}
+	else if (velocityX >= 0)
+	{
+		velocityX -= 0.02f;
 	}
 
 	if(keydata	[KEY_INPUT_UP])
@@ -105,7 +117,7 @@ void Player::SetMove()
 	{
 		velocityY -= 1.0f;
 	}
-	if (cpTypeCU == BF_GP_GROUND)
+	if (cpTypeCD == BF_GP_GROUND)
 	{
 		if (velocityY <= 0)
 		{
@@ -116,20 +128,21 @@ void Player::SetMove()
 		if (keydata[KEY_INPUT_LEFT])
 		{
 			velocityX -= 0.5f;
-			pos.x += velocityX;
 			dir = DIR_L;
 		}
 		if (keydata[KEY_INPUT_RIGHT])
 		{
 			velocityX += 0.5f;
-			pos.x += velocityX;
 			dir = DIR_R;
 		}
 	}
-	if ((cpTypeCU != BF_GP_GROUND))
+	if (cpTypeCD == BF_GP_WATER)
+	{
+		lpGameTask.CheckEditMode();
+	}
+	if ((cpTypeCD != BF_GP_GROUND))
 	{
 		moveLR = true;
-		SetAnim("落下2");
 		if (keydata[KEY_INPUT_LEFT])
 		{
 			SetAnim("扇ぐ2");

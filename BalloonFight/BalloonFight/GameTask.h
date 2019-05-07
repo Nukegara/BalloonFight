@@ -47,7 +47,6 @@ public:
 	const VECTOR2 GetAreaOffset();
 	const VECTOR2 &GetDrawOffset();
 
-	void ChangeGameMode(GMODE);
 
 	VECTOR pos;
 	VECTOR norm;
@@ -67,5 +66,6 @@ private:
 	static GameTask *s_Instance;
 	int (GameTask::*GtskPtr)(void);
 	int cnt;
+	int title;
 	obj_List objList;
 };
